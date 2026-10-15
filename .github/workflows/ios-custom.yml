@@ -22,7 +22,7 @@ jobs:
 
       - name: Configure
         run: |
-          cmake --preset ios
+          cmake --preset ios -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 
       - name: Build
         run: |
