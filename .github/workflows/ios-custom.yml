@@ -1,0 +1,41 @@
+name: iOS custom build
+
+on:
+  push:
+    branches:
+      - ipad-custom
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  ios:
+    name: iOS
+
+    runs-on: macos-15
+
+    steps:
+      - name: Clone
+        uses: actions/checkout@v4
+
+      - name: Configure
+        run: |
+          cmake --preset ios
+
+      - name: Build
+        run: |
+          cmake --build --preset ios-release
+
+      - name: Pack
+        run: |
+          cd out/build/ios
+          cpack -C RelWithDebInfo
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: fallout2-ce.ipa
+          path: out/build/ios/fallout2-ce.ipa
+          retention-days: 30
